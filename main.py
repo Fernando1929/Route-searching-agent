@@ -71,4 +71,3 @@ def simulated_annealing(problem, schedule=exp_schedule()):
         delta_e = problem.value(next_choice.state) - problem.value(current.state)
         if delta_e > 0 or probability(np.exp(delta_e / T)):
             current = next_choice
-
