@@ -39,4 +39,9 @@ class GraphProblem(Problem):
             return int(distance(locs[node.state], locs[self.goal]))
         else:
             return np.inf
-    
+
+    def value(self, state):
+        """For optimization problems, each state has a value. Hill Climbing
+        and related algorithms try to maximize this value."""
+        locs = getattr(self.graph, 'locations', None)
+        return int(distance(locs[state], locs[self.goal]))

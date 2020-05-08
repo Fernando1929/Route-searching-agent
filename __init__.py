@@ -30,7 +30,7 @@ romania_map.locations = dict(
 
 ############################## Puerto Rico Example ##########################################
 pr_map = UndirectedGraph(read_town_distances('resources/dataExcel.csv'))
-pr_map.locations = read_town_goal_distance("resources/dataExcelStraightLine.csv") Fix this
+pr_map.locations = read_town_goal_distance("resources/dataExcelStraightLine.csv")   # TODO: Fix this
 
 ############################## Romania Example ##########################################
 romania_problem = GraphProblem('Arad', 'Bucharest', romania_map)
@@ -40,8 +40,15 @@ romania_problem = GraphProblem('Arad', 'Bucharest', romania_map)
 def test_astar_search():
     return astar_search(romania_problem).solution()
 
+
 def astar_search_PR():
     return astar_search(pr_problem).solution()
 
-print('Romania Problem :', test_astar_search())
-print('Puerto Rico Problem :',test_astar_search())
+
+def simulated_annealing_search():
+    return simulated_annealing(romania_problem).solution()
+
+
+print('Romania Problem (a star) :', test_astar_search())
+# print('Puerto Rico Problem :',test_astar_search())
+print('Romania Problem (simulated annealing) :', simulated_annealing_search())
