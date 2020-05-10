@@ -40,6 +40,7 @@ pr_problem = GraphProblem('Mayaguez', 'Sanjuan', pr_map)
 def test_astar_search():
     return astar_search(romania_problem).solution()
 
+
 def astar_search_PR():
     return astar_search(pr_problem).solution()
 
@@ -48,10 +49,15 @@ def simulated_annealing_search():
     return simulated_annealing(romania_problem).solution()
 
 
+def simulated_annealing_PR():
+    return simulated_annealing(pr_problem).solution()
+
+
+print("TESTING ROMANIA ROUTE PROBLEM")
 print('Romania Problem (a star) :', test_astar_search())
-# print('Puerto Rico Problem :',test_astar_search())
 print('Romania Problem (simulated annealing) :', simulated_annealing_search())
 
-print(pr_map.locations)
-print('Romania Problem :', test_astar_search())
-print('Puerto Rico Problem :',astar_search_PR())
+# PR TESTING
+print("\nTESTING PUERTO RICO ROUTE PROBLEM")
+print('Puerto Rico Problem (a star):', astar_search_PR())
+print('Puerto Rico Problem (simulated annealing) :', simulated_annealing_PR())
