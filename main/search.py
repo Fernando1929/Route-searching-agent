@@ -75,6 +75,7 @@ def RandomGraph(nodes=list(range(10)), min_links=2, width=400, height=300,
     return g
 
 
+#   0.005
 def exp_schedule(k=20, lam=0.005, limit=100):
     """One possible schedule function for simulated annealing"""
     return lambda t: (k * np.exp(-lam * t) if t < limit else 0)

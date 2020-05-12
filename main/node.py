@@ -61,3 +61,7 @@ class Node:
         # object itself to quickly search a node
         # with the same state in a Hash Table
         return hash(self.state)
+
+    def cost(self):
+        return self.path_cost
+

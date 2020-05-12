@@ -1,4 +1,6 @@
 import sys
+
+from chosen_agents import AStarMapSearchAgent
 from main.search import *
 from main.graphproblem import GraphProblem
 from main.graph import Graph
@@ -53,6 +55,12 @@ def simulated_annealing_PR():
     return simulated_annealing(pr_problem).solution()
 
 
+def test_route_agent():
+    a_star_agent = AStarMapSearchAgent(100, "Arad")
+    print(a_star_agent("Bucharest"))
+
+
+test_route_agent()
 print("TESTING ROMANIA ROUTE PROBLEM")
 print('Romania Problem (a star) :', test_astar_search())
 print('Romania Problem (simulated annealing) :', simulated_annealing_search())
@@ -60,4 +68,4 @@ print('Romania Problem (simulated annealing) :', simulated_annealing_search())
 # PR TESTING
 print("\nTESTING PUERTO RICO ROUTE PROBLEM")
 print('Puerto Rico Problem (a star):', astar_search_PR())
-print('Puerto Rico Problem (simulated annealing) :', simulated_annealing_PR())
+# print('Puerto Rico Problem (simulated annealing) :', simulated_annealing_PR())
