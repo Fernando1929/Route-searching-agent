@@ -56,12 +56,39 @@ def simulated_annealing_PR():
 
 
 def test_route_agent():
-    romania_agent = MapSearchAgent(100, romania_map, "Arad")
-    pr_agent = MapSearchAgent(100, pr_map, "Mayaguez")
-    print("Romania Map A* Solution ", romania_agent("Bucharest", astar_search))
-    print("Romania Map Simulated Annealing Solution ", romania_agent("Bucharest", simulated_annealing))
-    print("Puerto Rico Map A* Solution ", pr_agent("Sanjuan", astar_search))
-    print("Puerto Rico Map Simulated Annealing Solution ", pr_agent("Sanjuan", simulated_annealing))
+    avg_speed =  100
+    romania_agent = MapSearchAgent(avg_speed, romania_map, "Arad")
+    pr_agent = MapSearchAgent(avg_speed, pr_map, "Mayaguez")
+    
+    #Runs Results for Romania
+    astar_romres = romania_agent("Bucharest", astar_search)
+    annealing_romres = romania_agent("Bucharest", simulated_annealing)
+
+    #Runs Results for Puerto Rico
+    astar_prres = pr_agent("Sanjuan", astar_search)
+    annealing_prres = pr_agent("Sanjuan", simulated_annealing)
+
+    #maybe add a print to add the starting point for each problem
+
+    print("******************* Romania, with avg speed of 100 km/h")
+    print(" ")
+    print("Romania Map A* Solution ", astar_romres[:-1])
+    print("Romania Map A* Solution Time is :", astar_romres[len(astar_romres)-1], "Hours")
+    print(" ")
+    print("Romania Map Simulated Annealing Solution ", annealing_romres[:-1])
+    print("Romania Map Simulated Annealing Solution Time is : ", annealing_romres[len(annealing_romres)-1], "Hours")
+    print(" ")
+
+
+    print("******************* Puerto Rico, with avg speed of 100 km/h")
+    print(" ")
+    print("Puerto Rico Map A* Solution ", astar_prres[:-1])
+    print("Puerto Rico Map A* Solution Time is: ", astar_prres[len(astar_prres)-1], "Hours")
+    print(" ")
+    print("Puerto Rico Map Simulated Annealing Solution ",annealing_prres[:-1])
+    print("Puerto Rico Map Simulated Annealing Solution Time is : ",annealing_prres[len(annealing_prres)-1], "Hours")
+    print(" ")
+
 
 
 test_route_agent()
