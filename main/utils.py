@@ -1,29 +1,22 @@
 """Provides some utilities widely used by other modules"""
-
-import bisect
-import collections
-import collections.abc
 import functools
-import heapq
-import operator
-import os.path
 import random
 from main.node import *
-from itertools import chain, combinations
-from statistics import mean
-from main.priorityqueue import PriorityQueue
 
 import numpy as np
+
 
 def is_in(elt, seq):
     """Similar to (elt in seq), but compares with 'is', not '=='."""
     return any(x is elt for x in seq)
+
 
 def distance(a, b):
     """The distance between two (x, y) points."""
     xA, yA = a
     xB, yB = b
     return np.hypot((xA - xB), (yA - yB))
+
 
 def memoize(fn, slot=None, maxsize=32):
     """Memoize fn: make it remember the computed value for any argument list.
@@ -51,10 +44,12 @@ def probability(p):
 
 
 def check_consistent(problem):
+    """Verifies that the given graph problem is consistent."""
     if not problem:
         return False
     else:
         consistent = False
+        original = problem.initial
         for town in problem.graph.nodes():
             if town != problem.goal:
                 problem.initial = town
@@ -68,39 +63,36 @@ def check_consistent(problem):
                         break
                 if not consistent:
                     break
-        if consistent:
-            print("Graph is Consistent")
-        else:
-            print("Graph is not Consistent")
+        problem.initial = original
         return consistent
 
 
 def check_admissible(problem):
+    """Verifies that the given graph problem is admissible."""
     if not problem:
         return False
     else:
         admissible = False
+        original = problem.initial
         for town in problem.graph.nodes():
             if town != problem.goal:
-                # print("Checking ", town)
                 problem.initial = town
                 curr = Node(problem.initial)
                 admissible = recursive_admissible(problem, curr, problem.h(curr))
                 if not admissible:
                     break
-        if admissible:
-            print("Graph is Admissible")
-        else:
-            print("Graph is not Admissible")
+        problem.initial = original
         return admissible
 
 
 def recursive_admissible(problem, current, target_dist):
+    """Recursive method to follow each possible path towards
+    the goal for the current node to validate that the
+    straight line approximation from the original node
+    to the goal is less than or equal to the actual cost."""
     if current.path_cost > target_dist:
-        # print("Admissible path ends at", current.state, "! Cost: ", current.path_cost, " Target Cost: ", target_dist)
         return True
     elif problem.goal_test(current):
-        # print("Not admissible! Check path at", current.state, "! Cost: ", current.path_cost, " Target Cost: ", target_dist)
         return False
     else:
         admissible = False
