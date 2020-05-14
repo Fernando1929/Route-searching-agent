@@ -8,6 +8,7 @@ import heapq
 import operator
 import os.path
 import random
+from main.node import *
 from itertools import chain, combinations
 from statistics import mean
 from main.priorityqueue import PriorityQueue
@@ -48,4 +49,76 @@ def probability(p):
     """Return true with probability p."""
     return p > random.uniform(0.0, 1.0)
 
+
+def check_consistent(problem):
+    if not problem:
+        return False
+    else:
+        consistent = False
+        for town in problem.graph.nodes():
+            if town != problem.goal:
+                problem.initial = town
+                curr = Node(problem.initial)
+                sl_approx = problem.h(curr)
+                for neighbor in curr.expand(problem):
+                    if neighbor.path_cost + problem.h(neighbor) >= sl_approx:
+                        consistent = True
+                    else:
+                        consistent = False
+                        break
+                if not consistent:
+                    break
+        if consistent:
+            print("Graph is Consistent")
+        else:
+            print("Graph is not Consistent")
+        return consistent
+
+
+def check_admissible(problem):
+    if not problem:
+        return False
+    else:
+        admissible = False
+        for town in problem.graph.nodes():
+            if town != problem.goal:
+                # print("Checking ", town)
+                problem.initial = town
+                curr = Node(problem.initial)
+                admissible = recursive_admissible(problem, curr, problem.h(curr))
+                if not admissible:
+                    break
+        if admissible:
+            print("Graph is Admissible")
+        else:
+            print("Graph is not Admissible")
+        return admissible
+
+
+def recursive_admissible(problem, current, target_dist):
+    if current.path_cost > target_dist:
+        # print("Admissible path ends at", current.state, "! Cost: ", current.path_cost, " Target Cost: ", target_dist)
+        return True
+    elif problem.goal_test(current):
+        # print("Not admissible! Check path at", current.state, "! Cost: ", current.path_cost, " Target Cost: ", target_dist)
+        return False
+    else:
+        admissible = False
+        expanded = current.expand(problem)
+        if len(expanded) < 3:
+            if current.parent in expanded:
+                expanded.remove(current.parent)
+            else:
+                if problem.h(expanded[0]) > problem.h(current) and problem.h(expanded[1]) > problem.h(current):
+                    if problem.h(expanded[0]) < problem.h(expanded[1]):
+                        expanded.pop(1)
+                    else:
+                        expanded.pop(0)
+        if len(expanded) == 1:
+            admissible = recursive_admissible(problem, expanded.pop(), target_dist)
+        else:
+            for neighbor in expanded:
+                if problem.h(neighbor) < problem.h(current):
+                    admissible = recursive_admissible(problem, neighbor, target_dist)
+        return admissible
 

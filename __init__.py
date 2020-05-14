@@ -56,12 +56,34 @@ def simulated_annealing_PR():
 
 
 def test_route_agent():
+    # Initialize agents for each map
     romania_agent = MapSearchAgent(100, romania_map, "Arad")
     pr_agent = MapSearchAgent(100, pr_map, "Mayaguez")
-    print("Romania Map A* Solution ", romania_agent("Bucharest", astar_search))
-    print("Romania Map Simulated Annealing Solution ", romania_agent("Bucharest", simulated_annealing))
-    print("Puerto Rico Map A* Solution ", pr_agent("Sanjuan", astar_search))
-    print("Puerto Rico Map Simulated Annealing Solution ", pr_agent("Sanjuan", simulated_annealing))
+    # Run analysis for Romania Map
+    print("\nRUNNING ROMANIA MAP ANALYSIS\n")
+    astar_result = romania_agent("Bucharest", astar_search)
+    simulated_annealing_result = romania_agent("Bucharest", simulated_annealing)
+    astar_time = astar_result.pop()
+    simulated_annealing_time = simulated_annealing_result.pop()
+    print("Romania Map A* Solution\tTravel time: ", astar_time, "\tPath: ", astar_result)
+    print("Romania Map Simulated Annealing\tTravel time: ", simulated_annealing_time, "\tPath: ", simulated_annealing_result)
+    performance = (astar_time-simulated_annealing_time)/astar_time*100
+    print("Simulated Annealing vs A* performance percentage: ", performance, "%")
+    # Run analysis for Puerto Rico Map
+    print("\nRUNNING PUERTO RICO MAP ANALYSIS\n")
+    astar_result = pr_agent("Sanjuan", astar_search)
+    simulated_annealing_result = pr_agent("Sanjuan", simulated_annealing)
+    astar_time = astar_result.pop()
+    simulated_annealing_time = simulated_annealing_result.pop()
+    print("Puerto Rico Map A* Solution\tTravel time: ", astar_time, "\tPath: ", astar_result)
+    print("Puerto Rico Map Simulated Annealing\tTravel time: ", simulated_annealing_time, "\tPath: ",
+          simulated_annealing_result)
+    performance = (astar_time - simulated_annealing_time) / astar_time * 100
+    print("Simulated Annealing vs A* performance percentage: ", performance, "%")
 
 
-test_route_agent()
+# test_route_agent()
+print(check_admissible(romania_problem))
+print(check_consistent(romania_problem))
+print(check_admissible(pr_problem))
+print(check_consistent(pr_problem))
