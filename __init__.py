@@ -43,7 +43,7 @@ def test_route_agent(title, start, goal, speed, problem):
 
     print(title, "A* Solution\nTravel time: ", astar_time, "Hours", "\nPath: ", astar_result, "\n")
     print(title, "Simulated Annealing Solution\nTravel time: ", simulated_annealing_time, "Hours", "\nPath: ", simulated_annealing_result, "\n")
-    performance = (astar_time-simulated_annealing_time)/astar_time*speed
+    performance = abs(astar_time-simulated_annealing_time)/astar_time*speed
     print("Simulated Annealing vs A* performance percentage: ", performance, "%")
 
 # Preparing Puerto Rico Graph
