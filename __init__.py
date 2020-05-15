@@ -1,4 +1,4 @@
-from chosen_agents import MapSearchAgent
+from main.chosen_agents import MapSearchAgent
 from main.search import *
 from main.graphproblem import GraphProblem, GPSGraphProblem
 from resources.readcsv import *
