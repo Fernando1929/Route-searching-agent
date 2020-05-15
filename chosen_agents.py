@@ -1,5 +1,3 @@
-from main.graphproblem import *
-
 
 class SimpleProblemSolvingAgentProgram:
     """
@@ -40,14 +38,14 @@ class SimpleProblemSolvingAgentProgram:
 
 
 class MapSearchAgent(SimpleProblemSolvingAgentProgram):
-    def __init__(self, speed, map_graph, initial_state=None):
+    def __init__(self, speed, map_problem, initial_state=None):
         """Speed is the average travel velocity for the agent.
         Map_graph stores the graph containing the map locations
         as nodes. State is an abstract representation of the
         state of the world. Seq is the list of actions required
         to get to a particular state from the initial state(root)."""
         self.speed = speed
-        self.map_graph = map_graph
+        self.problem = map_problem
         self.state = initial_state
         self.seq = []
 
@@ -74,8 +72,8 @@ class MapSearchAgent(SimpleProblemSolvingAgentProgram):
         """Given the initial state and goal state, creates the
         problem environment using the graph containing the
         map locations as nodes."""
-        problem = GraphProblem(state, goal, self.map_graph)
-        return problem
+        # problem = GraphProblem(state, goal, self.problem)
+        return self.problem
 
     def search(self, problem, algorithm):
         """Searches through the given problem using the provided

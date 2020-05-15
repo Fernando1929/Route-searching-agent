@@ -1,9 +1,6 @@
-import sys
-
 from chosen_agents import MapSearchAgent
 from main.search import *
-from main.graphproblem import GraphProblem
-from main.graph import Graph
+from main.graphproblem import GraphProblem, GPSGraphProblem
 from resources.readcsv import *
 
 romania_map = UndirectedGraph(dict(
@@ -30,65 +27,33 @@ romania_map.locations = dict(
     Sibiu=(207, 457), Timisoara=(94, 410), Urziceni=(456, 350),
     Vaslui=(509, 444), Zerind=(108, 531))
 
-############################## Puerto Rico Example ##########################################
-pr_map = UndirectedGraph(read_town_distances('resources/dataExcel.csv'))
-pr_map.locations = read_town_goal_distance("resources/dataExcelStraightLine.csv")   # Fix this
 
-############################## Romania Example ##########################################
-romania_problem = GraphProblem('Arad', 'Bucharest', romania_map)
-pr_problem = GraphProblem('Mayaguez', 'Sanjuan', pr_map)
-
-
-def test_astar_search():
-    return astar_search(romania_problem).solution()
-
-
-def astar_search_PR():
-    return astar_search(pr_problem).solution()
-
-
-def simulated_annealing_search():
-    return simulated_annealing(romania_problem).solution()
-
-
-def simulated_annealing_PR():
-    return simulated_annealing(pr_problem).solution()
-
-
-def test_route_agent():
-    avg_speed =  100
-    romania_agent = MapSearchAgent(avg_speed, romania_map, "Arad")
-    pr_agent = MapSearchAgent(avg_speed, pr_map, "Mayaguez")
+def test_route_agent(title, start, goal, speed, problem):
+    # Initialize agent
+    agent = MapSearchAgent(speed, problem, start)
+    # Run analysis for the given problem
+    print("\nRUNNING ANALYSIS for", title, "\n")
     
-    #Runs Results for Romania
-    astar_romres = romania_agent("Bucharest", astar_search)
-    annealing_romres = romania_agent("Bucharest", simulated_annealing)
+    print("Average speed for the algorithm", speed, "KM/H", "\n")
 
-    #Runs Results for Puerto Rico
-    astar_prres = pr_agent("Sanjuan", astar_search)
-    annealing_prres = pr_agent("Sanjuan", simulated_annealing)
+    astar_result = agent(goal, astar_search)
+    simulated_annealing_result = agent(goal, simulated_annealing)
+    astar_time = astar_result.pop()
+    simulated_annealing_time = simulated_annealing_result.pop()
 
-    #maybe add a print to add the starting point for each problem
+    print(title, "A* Solution\nTravel time: ", astar_time, "Hours", "\nPath: ", astar_result, "\n")
+    print(title, "Simulated Annealing Solution\nTravel time: ", simulated_annealing_time, "Hours", "\nPath: ", simulated_annealing_result, "\n")
+    performance = (astar_time-simulated_annealing_time)/astar_time*speed
+    print("Simulated Annealing vs A* performance percentage: ", performance, "%")
 
-    print("******************* Romania, with avg speed of 100 km/h")
-    print(" ")
-    print("Romania Map A* Solution ", astar_romres[:-1])
-    print("Romania Map A* Solution Time is :", astar_romres[len(astar_romres)-1], "Hours")
-    print(" ")
-    print("Romania Map Simulated Annealing Solution ", annealing_romres[:-1])
-    print("Romania Map Simulated Annealing Solution Time is : ", annealing_romres[len(annealing_romres)-1], "Hours")
-    print(" ")
+# Preparing Puerto Rico Graph
+pr_map = UndirectedGraph(read_town_distances('resources/dataExcel2.csv'))
+pr_map.locations = read_town_goal_distance("resources/dataExcelStraightLine2.csv")
 
+# Creating Map Problems
+romania_problem = GraphProblem('Arad', 'Bucharest', romania_map)
+pr_problem = GPSGraphProblem('Mayaguez', 'Sanjuan', pr_map)
 
-    print("******************* Puerto Rico, with avg speed of 100 km/h")
-    print(" ")
-    print("Puerto Rico Map A* Solution ", astar_prres[:-1])
-    print("Puerto Rico Map A* Solution Time is: ", astar_prres[len(astar_prres)-1], "Hours")
-    print(" ")
-    print("Puerto Rico Map Simulated Annealing Solution ",annealing_prres[:-1])
-    print("Puerto Rico Map Simulated Annealing Solution Time is : ",annealing_prres[len(annealing_prres)-1], "Hours")
-    print(" ")
-
-
-
-test_route_agent()
+# Running analysis
+test_route_agent("Romania", "Arad", "Bucharest", 100, romania_problem)
+test_route_agent("Puerto Rico", "Mayaguez", "Sanjuan", 100, pr_problem)
